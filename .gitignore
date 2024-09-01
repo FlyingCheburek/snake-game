@@ -45,3 +45,5 @@
 *.ilk
 *.txt
 *.lastbuildstate
+*.log
+*.vsidx
