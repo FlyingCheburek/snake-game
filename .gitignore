@@ -47,3 +47,5 @@
 *.lastbuildstate
 *.log
 *.vsidx
+*.lock
+*.suo
