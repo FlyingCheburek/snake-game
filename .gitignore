@@ -49,3 +49,9 @@
 *.vsidx
 *.lock
 *.suo
+*.aps
+*.ncp
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
