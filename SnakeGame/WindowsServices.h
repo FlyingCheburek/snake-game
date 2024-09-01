@@ -6,7 +6,7 @@ namespace WindowsServices {
 	class AudioFile final {
 	private:
 		const std::string filename;
-		static const wchar_t* GetWC(const char* c) noexcept;
+		static const wchar_t* getWC(const char* c) noexcept;
 	public:
 		AudioFile(const std::string&& filename, const std::string&& type) noexcept;
 		void play(const bool&& wait) const noexcept;
@@ -18,5 +18,27 @@ namespace WindowsServices {
 		~AudioFile() noexcept;
 	};
 
-	class TerminalGraphics final {  }; //to-be added
+	class TerminalGraphics final {
+	public:
+		enum Color : unsigned short {
+			BLACK,
+			DARKBLUE,
+			DARKGREEN,
+			DARKCYAN,
+			DARKRED,
+			DARKMAGENTA,
+			DARKYELLOW,
+			DARKGRAY,
+			GRAY,
+			BLUE,
+			GREEN,
+			CYAN,
+			RED,
+			MAGENTA,
+			YELLOW,
+			WHITE
+		};
+		static void setCursorPosition(const int&& x, const int&& y) noexcept;
+		static void setTextColor(const Color color) noexcept; 
+	}; 
 }
