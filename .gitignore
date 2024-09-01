@@ -55,3 +55,6 @@
 *.opensdf
 *.sdf
 *.cachefile
+*.ipch
+*.db-shm
+*.db-wal
