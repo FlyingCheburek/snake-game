@@ -1,6 +1,6 @@
-#include "SnakeGame.h"
+#include "Graphics.h"
 
 int main() {
-	SnakeGame snake;
+
 	return 0;
 }
