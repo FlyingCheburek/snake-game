@@ -2,17 +2,37 @@
 #include "WindowsServices.h"
 using namespace WindowsServices;
 
+COORD TerminalGraphics::getCursorPosition() noexcept {
+	const HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	if (GetConsoleScreenBufferInfo(h, &csbi)) return csbi.dwCursorPosition;
+	return { -1, -1 };
+}
+
 void TerminalGraphics::setCursorPosition(const COORD cursor_pos) noexcept {
-	static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	const HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	std::cout.flush();
-	SetConsoleCursorPosition(hOut, cursor_pos);
+	SetConsoleCursorPosition(h, cursor_pos);
+}
+
+void TerminalGraphics::setCursorXPosition(const short x) noexcept {
+	COORD curr = getCursorPosition();
+	curr.X = x;
+	setCursorPosition(curr);
+}
+
+void TerminalGraphics::setCursorYPosition(const short y) noexcept {
+	COORD curr = getCursorPosition();
+	curr.Y = y;
+	setCursorPosition(curr);
 }
 
 void TerminalGraphics::setTextColor(const Color color) noexcept {
-	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	const HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	WORD wOldColorAttrs;
-	CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
-	GetConsoleScreenBufferInfo(h, &csbiInfo);
-	wOldColorAttrs = csbiInfo.wAttributes;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(h, &csbi);
+	wOldColorAttrs = csbi.wAttributes;
 	SetConsoleTextAttribute(h, color);
 }
+
