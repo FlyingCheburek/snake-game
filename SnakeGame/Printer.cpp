@@ -1,5 +1,6 @@
 #include "Graphics.h"
 #include <iostream>
+#include <utility>
 using namespace Graphics;
 
 Printer::Printer(const unsigned char&& brick, WindowsServices::TerminalGraphics::Color&& color) noexcept {
@@ -28,8 +29,20 @@ void Printer::printText(std::string text) noexcept {
 	std::cout << text;
 }
 
+void Printer::printText(std::string text, const COORD cursor_pos) noexcept {
+	WindowsServices::TerminalGraphics::setCursorPosition(cursor_pos);
+	std::cout << text;
+}
+
 void Printer::printText(std::string text, const WindowsServices::TerminalGraphics::Color&& color) noexcept {
 	WindowsServices::TerminalGraphics::setTextColor(color);
+	std::cout << text;
+	WindowsServices::TerminalGraphics::setTextColor(this->color);
+}
+
+void Printer::printText(std::string text, const COORD cursor_pos, const WindowsServices::TerminalGraphics::Color&& color) noexcept {
+	WindowsServices::TerminalGraphics::setTextColor(color);
+	WindowsServices::TerminalGraphics::setCursorPosition(cursor_pos);
 	std::cout << text;
 	WindowsServices::TerminalGraphics::setTextColor(this->color);
 }

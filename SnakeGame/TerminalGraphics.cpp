@@ -2,11 +2,10 @@
 #include "WindowsServices.h"
 using namespace WindowsServices;
 
-void TerminalGraphics::setCursorPosition(const int&& x, const int&& y) noexcept {
+void TerminalGraphics::setCursorPosition(const COORD cursor_pos) noexcept {
 	static const HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	std::cout.flush();
-	COORD coord = { (SHORT)x, (SHORT)y };
-	SetConsoleCursorPosition(hOut, coord);
+	SetConsoleCursorPosition(hOut, cursor_pos);
 }
 
 void TerminalGraphics::setTextColor(const Color color) noexcept {

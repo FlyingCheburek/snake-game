@@ -16,6 +16,8 @@ namespace Graphics {
 		WindowsServices::TerminalGraphics::Color getColor() const noexcept;
 
 		void printText(const std::string text) noexcept;
+		void printText(const std::string text, const COORD cursor_pos) noexcept;
 		void printText(const std::string text, const WindowsServices::TerminalGraphics::Color&& color) noexcept;
+		void printText(const std::string text, const COORD cursor_pos, const WindowsServices::TerminalGraphics::Color&& color) noexcept;
 	};
 }

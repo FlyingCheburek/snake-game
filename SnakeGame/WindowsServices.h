@@ -38,7 +38,7 @@ namespace WindowsServices {
 			YELLOW,
 			WHITE
 		};
-		static void setCursorPosition(const int&& x, const int&& y) noexcept;
+		static void setCursorPosition(const COORD cursor_pos) noexcept;
 		static void setTextColor(const Color color) noexcept; 
 	}; 
 }
