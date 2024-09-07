@@ -2,7 +2,7 @@
 #include "WindowsServices.h"
 
 namespace Graphics {
-	class Printer {
+	class Printer final {
 	private:
 		WindowsServices::TerminalGraphics::Color color;
 		unsigned char brick;
