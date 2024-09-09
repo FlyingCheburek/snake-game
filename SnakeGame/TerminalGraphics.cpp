@@ -15,6 +15,12 @@ void TerminalGraphics::setCursorPosition(const COORD cursor_pos) noexcept {
 	SetConsoleCursorPosition(h, cursor_pos);
 }
 
+void TerminalGraphics::setCursorPosition(const COORD *const cursor_pos) noexcept {
+	const HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	std::cout.flush();
+	SetConsoleCursorPosition(h, *cursor_pos);
+}
+
 void TerminalGraphics::setCursorXPosition(const short x) noexcept {
 	COORD curr = getCursorPosition();
 	curr.X = x;
@@ -34,5 +40,14 @@ void TerminalGraphics::setTextColor(const Color color) noexcept {
 	GetConsoleScreenBufferInfo(h, &csbi);
 	wOldColorAttrs = csbi.wAttributes;
 	SetConsoleTextAttribute(h, color);
+}
+
+void TerminalGraphics::setTextColor(const Color *const color) noexcept {
+	const HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	WORD wOldColorAttrs;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(h, &csbi);
+	wOldColorAttrs = csbi.wAttributes;
+	SetConsoleTextAttribute(h, *color);
 }
 
