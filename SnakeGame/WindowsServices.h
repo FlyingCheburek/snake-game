@@ -8,7 +8,7 @@ namespace WindowsServices {
 		const std::string filename;
 		static const wchar_t* getWC(const char* c) noexcept;
 	public:
-		AudioFile(const std::string&& filename, const std::string&& type) noexcept;
+		AudioFile(const std::string&& filename, const std::string&& type = "") noexcept;
 		void play(const bool&& wait) const noexcept;
 		void replay(const bool&& wait) const noexcept;
 		void loop() const noexcept;
@@ -19,7 +19,11 @@ namespace WindowsServices {
 	};
 
 	class TerminalGraphics final {
+	private:
+		HANDLE handle;
+		CONSOLE_SCREEN_BUFFER_INFO info;
 	public:
+		TerminalGraphics();
 		enum Color : unsigned short {
 			BLACK,
 			DARKBLUE,
@@ -38,12 +42,11 @@ namespace WindowsServices {
 			YELLOW,
 			WHITE
 		};
-		static void setCursorPosition(const COORD cursor_pos) noexcept;
-		static void setCursorPosition(const COORD *const cursor_pos) noexcept;
-		static void setCursorXPosition(const short x) noexcept;
-		static void setCursorYPosition(const short y) noexcept;
-		static COORD getCursorPosition() noexcept;
-		static void setTextColor(const Color color) noexcept;
-		static void setTextColor(const Color *const color) noexcept;
+		void setCaretPosition(const COORD cursor_pos) noexcept;
+		void setCaretPosition(const COORD *const cursor_pos) noexcept;
+		COORD getCaretPosition() noexcept;
+		WORD getTextColor() noexcept;
+		void setTextColor(const Color color) noexcept;
+		void setTextColor(const Color *const color) noexcept;
 	}; 
 }
