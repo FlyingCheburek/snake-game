@@ -26,6 +26,41 @@ TerminalGraphics::Color Printer::getDefaultColor() const noexcept {
 	return default_color;
 }
 
+void Printer::print(const char* text, unsigned short num_prints) const noexcept {
+	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	while (num_prints--) std::cout << text;
+}
+
+void Printer::printIcon(unsigned short num_prints) const noexcept {
+	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	while (num_prints--) std::cout << icon;
+}
+
+void Printer::verticalPrint(const char* text, unsigned short num_prints) const noexcept{
+	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	COORD position = console.getCaretPosition();
+	const char* head = text;
+	while (num_prints--) {
+		while (*text) {
+			std::cout << *text;
+			position.Y++;
+			console.setCaretPosition(position);
+			text++;
+		}
+		text = head;
+	}
+}
+
+void Printer::verticalPrintIcon(unsigned short num_prints) const noexcept{
+	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	COORD position = console.getCaretPosition();
+	while (num_prints--) {
+		std::cout << icon;
+		position.Y++;
+		console.setCaretPosition(position);
+	}
+}
+
 std::ostream& operator<<(std::ostream& out, const Printer& printer) {
-	return out << "{\"icon\": \"" << printer.icon << "\", \"default color\": " << printer.default_color << ", \"console\": \"" << &printer.console << "\"}";
+	return out << "{\"icon\": \"" << printer.icon << "\", \"default color\": " << printer.default_color << "}";
 }
