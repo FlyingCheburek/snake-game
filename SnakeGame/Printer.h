@@ -8,6 +8,7 @@ class Printer {
 protected:
 	unsigned char icon; 
 	TerminalGraphics::Color default_color;
+	inline void ensureDefaultColor() const noexcept;
 
 public:
 	inline static TerminalGraphics console;

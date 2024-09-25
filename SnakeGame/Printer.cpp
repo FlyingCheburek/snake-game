@@ -1,5 +1,9 @@
 ﻿#include "Printer.h"
 
+inline void Printer::ensureDefaultColor() const noexcept {
+	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+}
+
 Printer::Printer() noexcept {
 	icon = 219; /* █ */
 	default_color = TerminalGraphics::WHITE;
@@ -27,17 +31,17 @@ TerminalGraphics::Color Printer::getDefaultColor() const noexcept {
 }
 
 void Printer::print(const char* text, unsigned short num_prints) const noexcept {
-	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	ensureDefaultColor();
 	while (num_prints--) std::cout << text;
 }
 
 void Printer::printIcon(unsigned short num_prints) const noexcept {
-	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	ensureDefaultColor();
 	while (num_prints--) std::cout << icon;
 }
 
 void Printer::verticalPrint(const char* text, unsigned short num_prints) const noexcept{
-	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	ensureDefaultColor();
 	COORD position = console.getCaretPosition();
 	const char* head = text;
 	while (num_prints--) {
@@ -52,7 +56,7 @@ void Printer::verticalPrint(const char* text, unsigned short num_prints) const n
 }
 
 void Printer::verticalPrintIcon(unsigned short num_prints) const noexcept{
-	if (console.getTextColor() != default_color) console.setTextColor(default_color);
+	ensureDefaultColor();
 	COORD position = console.getCaretPosition();
 	while (num_prints--) {
 		std::cout << icon;
