@@ -31,13 +31,20 @@ WORD TerminalGraphics::getTextColor() noexcept {
 	return info.wAttributes;
 }
 
-void TerminalGraphics::setTextColor(const Color color) noexcept {
+void TerminalGraphics::setTextColor(const unsigned short color) noexcept {
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle, color);
 }
 
-void TerminalGraphics::setTextColor(const Color *const color) noexcept {
+void TerminalGraphics::setTextColor(const unsigned short *const color) noexcept {
 	handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(handle, *color);
+}
+
+void TerminalGraphics::setDimensions(const unsigned short width, const unsigned short height) noexcept {
+	HWND console = GetConsoleWindow();
+	RECT r;
+	GetWindowRect(console, &r);
+	MoveWindow(console, r.left, r.top, width, height, TRUE);
 }
 

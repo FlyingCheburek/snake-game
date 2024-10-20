@@ -1,11 +1,12 @@
 #include "ComplexPrinter.h"
 
-ComplexPrinter::CanvasCell::CanvasCell(const unsigned char&& icon, const TerminalGraphics::Color&& color) noexcept : icon(icon), color(color) {  }
+ComplexPrinter::CanvasCell::CanvasCell(const unsigned char&& icon, const unsigned short&& color) noexcept : icon(icon), color(color) {  }
 ComplexPrinter::ComplexPrinter() noexcept {  }
-ComplexPrinter::ComplexPrinter(const unsigned char icon, const TerminalGraphics::Color default_color) noexcept : Printer(icon, default_color) {  }
+ComplexPrinter::ComplexPrinter(const unsigned char icon, const unsigned short default_color) noexcept : Printer(icon, default_color) {  }
 
-void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>& matrix, const unsigned char false_icon, TerminalGraphics::Color false_color) const noexcept{
+void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>& matrix, COORD position, const unsigned char false_icon, unsigned short false_color) const noexcept{
 	ensureDefaultColor();
+	console.setCaretPosition(&position);
 	for (const std::vector<bool>& row : matrix) {
 		for (const bool& cell : row) {
 			if (cell) {
@@ -17,13 +18,14 @@ void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>& matrix, c
 				std::cout << false_icon;
 			}
 		}
-		std::cout << std::endl;
+		console.setCaretPosition({(short)(console.getCaretPosition().X - row.size()), position.Y++});
 	}
 	ensureDefaultColor();
 }
 
-void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>&& matrix, const unsigned char false_icon, TerminalGraphics::Color false_color) const noexcept {
+void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>&& matrix, COORD position, const unsigned char false_icon, unsigned short false_color) const noexcept {
 	ensureDefaultColor();
+	console.setCaretPosition(&position);
 	for (const std::vector<bool>& row : matrix) {
 		for (const bool& cell : row) {
 			if (cell) {
@@ -35,12 +37,12 @@ void ComplexPrinter::printMatrix(const std::vector<std::vector<bool>>&& matrix, 
 				std::cout << false_icon;
 			}
 		}
-		std::cout << std::endl;
+		console.setCaretPosition({ (short)(console.getCaretPosition().X - row.size()), ++position.Y });
 	}
 	ensureDefaultColor();
 }
 
-void ComplexPrinter::printCanvas(std::vector<std::vector<CanvasCell>>& canvas) const noexcept{
+void ComplexPrinter::printCanvas(const std::vector<std::vector<CanvasCell>>& canvas) const noexcept{
 	for (const std::vector<CanvasCell>& row : canvas) {
 		for (const CanvasCell& cell : row) {
 			console.setTextColor(cell.color);
@@ -51,7 +53,7 @@ void ComplexPrinter::printCanvas(std::vector<std::vector<CanvasCell>>& canvas) c
 	ensureDefaultColor();
 }
 
-void ComplexPrinter::printCanvas(std::vector<std::vector<CanvasCell>>&& canvas) const noexcept {
+void ComplexPrinter::printCanvas(const std::vector<std::vector<CanvasCell>>&& canvas) const noexcept {
 	for (const std::vector<CanvasCell>& row : canvas) {
 		for (const CanvasCell& cell : row) {
 			console.setTextColor(cell.color);

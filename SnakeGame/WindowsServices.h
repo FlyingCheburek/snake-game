@@ -46,7 +46,8 @@ namespace WindowsServices {
 		void setCaretPosition(const COORD *const cursor_pos) noexcept;
 		COORD getCaretPosition() noexcept;
 		WORD getTextColor() noexcept;
-		void setTextColor(const Color color) noexcept;
-		void setTextColor(const Color *const color) noexcept;
+		void setTextColor(const unsigned short color) noexcept;
+		void setTextColor(const unsigned short *const color) noexcept;
+		void setDimensions(const unsigned short width, const unsigned short height) noexcept;
 	}; 
 }
