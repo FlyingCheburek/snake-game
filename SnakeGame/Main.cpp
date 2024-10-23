@@ -2,6 +2,8 @@
 
 int main() {
 	SnakeGame::Game game;
-	game.titleScreen();
+	if (game.titleScreen()) {
+		game.pauseScreen();
+	} 
 	return 0;
 }

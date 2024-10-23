@@ -17,7 +17,7 @@ void SnakeGame::Game::drawBorder() const noexcept {
 	printer.printIcon(WIDTH);
 }
 
-void SnakeGame::Game::titleScreen() noexcept {
+bool SnakeGame::Game::titleScreen() const noexcept {
 	drawBorder();
 	printer.setIcon(219);
 	printer.setDefaultColor(WindowsServices::TerminalGraphics::DARKRED);
@@ -86,8 +86,57 @@ void SnakeGame::Game::titleScreen() noexcept {
 	printer.setDefaultColor(0x2E);
 	printer.print("The ASCII Game");
 	WindowsServices::AudioFile main_theme("giga_chad.mp3");
-	main_theme.play(false);
-	
+	printer.setDefaultColor(0x2F);
+	printer.console.setCaretPosition({31, 23});
+	printer.print("< PLAY >");
+	printer.setDefaultColor(0x20);
+	printer.console.setCaretPosition({ 31, 24 });
+	printer.print("< QUIT >");
+	main_theme.loop();
+	char state = Keyboard::UP;
+	while (true) {
+		switch (keyboard.getKeyPressed()) {
+			case Keyboard::DOWN:
+				if (state == Keyboard::UP) {
+					state = Keyboard::DOWN;
+					printer.setDefaultColor(0x20);
+					printer.console.setCaretPosition({ 31, 23 });
+					printer.print("< PLAY >");
+					printer.setDefaultColor(0x2F);
+					printer.console.setCaretPosition({ 31, 24 });
+					printer.print("< QUIT >");
+				}
+			break;
+			case Keyboard::UP:
+				if (state == Keyboard::DOWN) {
+					state = Keyboard::UP;
+					printer.setDefaultColor(0x2F);
+					printer.console.setCaretPosition({ 31, 23 });
+					printer.print("< PLAY >");
+					printer.setDefaultColor(0x20);
+					printer.console.setCaretPosition({ 31, 24 });
+					printer.print("< QUIT >");
+				}
+			break;
+			case Keyboard::ENTER:
+				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
+				system("cls");
+				if (state == Keyboard::UP) return true;
+				else return false;
+			break;
+			case Keyboard::ESC:
+				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
+				system("cls");
+				return false;
+			break;
+		}
+	}
+}
+
+bool SnakeGame::Game::pauseScreen() const noexcept {
+	// TODO!
+	drawBorder();
+	while (true);
 }
 
 SnakeGame::Keyboard::Keyboard() noexcept {

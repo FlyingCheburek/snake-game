@@ -15,6 +15,7 @@ namespace SnakeGame {
 		Keyboard() noexcept;
 		char getKeyPressed() const noexcept;
 		~Keyboard() noexcept;
+		inline static const char ENTER = 13, ESC = 27, UP = 72, LEFT = 75, RIGHT = 77, DOWN = 80;
 	};
 
 	class Game {
@@ -23,8 +24,10 @@ namespace SnakeGame {
 		static const short WIDTH = 75, HEIGHT = 40, WINDOW_WIDTH = 645, WINDOW_HEIGHT = 720;
 		static Keyboard keyboard;
 		void drawBorder() const noexcept;
+
 	public:
-		void titleScreen() noexcept;
+		bool titleScreen() const noexcept;
+		bool pauseScreen() const noexcept;
 	};
 }
 
