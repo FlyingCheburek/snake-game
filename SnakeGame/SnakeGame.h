@@ -34,16 +34,17 @@ namespace SnakeGame {
 
 	class Game {
 	private:
-		static ComplexPrinter printer;
-		static const short WIDTH = 75, HEIGHT = 40, WINDOW_WIDTH = 645, WINDOW_HEIGHT = 720;
-		static Keyboard keyboard;
-		static SoundFX sound_fx;
-		std::atomic<unsigned> score = 0;
+		static ComplexPrinter PRINTER;
+		static const short WIDTH = 75, HEIGHT = 40, WINDOW_WIDTH = 645, WINDOW_HEIGHT = 720, MAX_SCORE = 2774;
+		static Keyboard KEYBOARD;
+		static SoundFX SOUND_FX;
+		std::atomic<short> score = 0;
 		void drawBorder() const noexcept; 
 
 	public:
 		bool titleScreen() const noexcept;
 		bool pauseScreen() const noexcept;
+		bool gameOverScreen() noexcept;
 	};
 }
 
