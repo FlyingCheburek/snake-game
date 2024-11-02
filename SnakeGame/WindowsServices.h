@@ -9,7 +9,7 @@ namespace WindowsServices {
 		static const wchar_t* getWC(const char* c) noexcept;
 	public:
 		AudioFile(const std::string&& filename, const std::string&& type = "") noexcept;
-		void play(const bool&& wait) const noexcept;
+		void play(const bool&& wait = false) const noexcept;
 		void replay(const bool&& wait) const noexcept;
 		void loop() const noexcept;
 		void pause() const noexcept;

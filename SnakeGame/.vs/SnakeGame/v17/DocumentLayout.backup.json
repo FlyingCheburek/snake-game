@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|solutionrelative:SnakeGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|solutionrelative:SnakeGame.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|solutionrelative:SnakeGame.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\WindowsServices.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{E76A2FA9-D83F-4CA7-96B0-507FA289C60B}|SnakeGame.vcxproj|solutionrelative:WindowsServices.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,30 +26,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
+              "Title": "WindowsServices.h",
+              "DocumentMoniker": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\WindowsServices.h",
+              "RelativeDocumentMoniker": "WindowsServices.h",
+              "ToolTip": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\WindowsServices.h",
+              "RelativeToolTip": "WindowsServices.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-11-01T23:03:28.14Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "SnakeGame.cpp",
               "DocumentMoniker": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.cpp",
               "RelativeDocumentMoniker": "SnakeGame.cpp",
               "ToolTip": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.cpp",
               "RelativeToolTip": "SnakeGame.cpp",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAAAFkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-21T23:14:44.873Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "SnakeGame.h",
               "DocumentMoniker": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.h",
               "RelativeDocumentMoniker": "SnakeGame.h",
-              "ToolTip": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.h",
-              "RelativeToolTip": "SnakeGame.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAXAAAAAAAAAA==",
+              "ToolTip": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\SnakeGame.h*",
+              "RelativeToolTip": "SnakeGame.h*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAABVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-10-21T23:14:45.26Z",
               "EditorCaption": ""
@@ -58,7 +75,7 @@
               "RelativeDocumentMoniker": "Main.cpp",
               "ToolTip": "D:\\Projetos\\GitHub\\snake-game\\SnakeGame\\Main.cpp",
               "RelativeToolTip": "Main.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-10-21T23:14:45.261Z",
               "EditorCaption": ""

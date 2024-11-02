@@ -58,3 +58,4 @@
 *.ipch
 *.db-shm
 *.db-wal
+*.json
