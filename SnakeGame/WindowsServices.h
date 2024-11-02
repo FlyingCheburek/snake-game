@@ -10,7 +10,7 @@ namespace WindowsServices {
 	public:
 		AudioFile(const std::string&& filename, const std::string&& type = "") noexcept;
 		void play(const bool&& wait = false) const noexcept;
-		void replay(const bool&& wait) const noexcept;
+		void replay(const bool&& wait = false) const noexcept;
 		void loop() const noexcept;
 		void pause() const noexcept;
 		void resume() const noexcept;

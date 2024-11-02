@@ -3,8 +3,11 @@
 ComplexPrinter SnakeGame::Game::printer = ComplexPrinter(219, WindowsServices::TerminalGraphics::WHITE);
 
 SnakeGame::Keyboard SnakeGame::Game::keyboard = SnakeGame::Keyboard();
+SnakeGame::SoundFX SnakeGame::Game::sound_fx = SnakeGame::SoundFX();
 
 void SnakeGame::Game::drawBorder() const noexcept {
+	printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
+	system("cls");
 	printer.setIcon(219);
 	printer.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
 	printer.console.setDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -97,21 +100,11 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 	WindowsServices::AudioFile main_theme("giga_chad.mp3"), click("click.mp3"), swipe("swipe.mp3");
 	main_theme.loop();
 	char state = Keyboard::UP;
-	std::atomic<bool> play_sound = false;
-	std::atomic<WindowsServices::AudioFile*> sound = &swipe;
-	std::thread sound_fx([&sound, &play_sound]() {
-		while (true) {
-			if (play_sound.load()) {
-				sound.load()->play();
-				play_sound.store(false);
-			}
-		}
-	});
 	while (true) {
 		switch (keyboard.getKeyPressed()) {
 			case Keyboard::DOWN:
 				if (state == Keyboard::UP) {
-					play_sound.store(true);
+					sound_fx.setSound(&swipe, true);
 					state = Keyboard::DOWN;
 					printer.setDefaultColor(0x20);
 					printer.console.setCaretPosition({ 31, 23 });
@@ -123,7 +116,7 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 			break;
 			case Keyboard::UP:
 				if (state == Keyboard::DOWN) {
-					play_sound.store(true);
+					sound_fx.setSound(&swipe, true);
 					state = Keyboard::UP;
 					printer.setDefaultColor(0x2F);
 					printer.console.setCaretPosition({ 31, 23 });
@@ -134,20 +127,16 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 				}
 			break;
 			case Keyboard::ENTER:
-				sound.store(&click);
-				play_sound.store(true);
+				sound_fx.setSound(&click, true);
 				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
 				system("cls");
-				sound_fx.detach();
 				if (state == Keyboard::UP) return true;
 				else return false;
 			break;
 			case Keyboard::ESC:
-				sound.store(&click);
-				play_sound.store(true);
+				sound_fx.setSound(&click, true);
 				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
 				system("cls");
-				sound_fx.detach();
 				return false;
 			break;
 		}
@@ -155,9 +144,95 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 }
 
 bool SnakeGame::Game::pauseScreen() const noexcept {
-	// TODO!
 	drawBorder();
-	while (true);
+	printer.printMatrix({
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0},
+		{1, 0, 0, 0, 0},
+	}, {21, 16});
+	printer.printMatrix({
+		{0, 1, 1, 1, 0},
+		{1, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1},
+	}, { 27, 16 });
+	printer.printMatrix({
+		{1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1},
+		{1, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1},
+	}, { 33, 16 });
+	printer.printMatrix({
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1},
+		{0, 0, 0, 0, 1},
+		{1, 1, 1, 1, 1},
+	}, { 39, 16 });
+	printer.printMatrix({
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1},
+		{1, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1},
+	}, { 45, 16 });
+	printer.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
+	printer.console.setCaretPosition({ 32, 23 });
+	printer.print((std::string("SCORE: ") + std::to_string(score.load())).c_str());
+	printer.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+	printer.console.setCaretPosition({ 30, 26 });
+	printer.print("< CONTINUE >");
+	printer.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+	printer.console.setCaretPosition({ 32, 27 });
+	printer.print("< QUIT >");
+	char state = Keyboard::UP;
+	keyboard.setKeyPressed((char)Keyboard::UP);
+	WindowsServices::AudioFile click("click.mp3"), swipe("swipe.mp3");
+	while (true) {
+		switch (keyboard.getKeyPressed()) {
+		case Keyboard::DOWN:
+			if (state == Keyboard::UP) {
+				sound_fx.setSound(&swipe, true);
+				state = Keyboard::DOWN;
+				printer.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+				printer.console.setCaretPosition({ 30, 26 });
+				printer.print("< CONTINUE >");
+				printer.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+				printer.console.setCaretPosition({ 32, 27 });
+				printer.print("< QUIT >");
+			}
+			break;
+		case Keyboard::UP:
+			if (state == Keyboard::DOWN) {
+				sound_fx.setSound(&swipe, true);
+				state = Keyboard::UP;
+				printer.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+				printer.console.setCaretPosition({ 30, 26 });
+				printer.print("< CONTINUE >");
+				printer.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+				printer.console.setCaretPosition({ 32, 27 });
+				printer.print("< QUIT >");
+			}
+			break;
+		case Keyboard::ENTER:
+			sound_fx.setSound(&click, true);
+			printer.setDefaultColor(WindowsServices::TerminalGraphics::BLACK);
+			system("cls");
+			if (state == Keyboard::UP) return true;
+			else return false;
+			break;
+		case Keyboard::ESC:
+			sound_fx.setSound(&click, true);
+			printer.setDefaultColor(WindowsServices::TerminalGraphics::BLACK);
+			system("cls");
+			return true;
+			break;
+		}
+	}
 }
 
 SnakeGame::Keyboard::Keyboard() noexcept {
@@ -172,6 +247,34 @@ char SnakeGame::Keyboard::getKeyPressed() const noexcept {
 	return key_pressed.load();
 }
 
+void SnakeGame::Keyboard::setKeyPressed(const char&& key) noexcept {
+	key_pressed.store(key);
+}
+
 SnakeGame::Keyboard::~Keyboard() noexcept {
+	listener.detach();
+}
+
+SnakeGame::SoundFX::SoundFX(WindowsServices::AudioFile* sound) noexcept : sound(sound) {
+	listener = std::thread([&](){
+		while (true) {
+			if (play.load()) {
+				if (this->sound.load()) this->sound.load()->play();
+				play.store(false);
+			}
+		}
+	});
+}
+
+void SnakeGame::SoundFX::setSound(WindowsServices::AudioFile* sound, const bool&& play) noexcept {
+	this->sound.store(sound);
+	this->play.store(play);
+}
+
+void SnakeGame::SoundFX::setPlay(const bool&& play) noexcept {
+	this->play.store(play);
+}
+
+SnakeGame::SoundFX::~SoundFX() noexcept {
 	listener.detach();
 }
