@@ -297,6 +297,13 @@ bool SnakeGame::Game::gameOverScreen() noexcept {
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
 	PRINTER.console.setCaretPosition({ 32, 22 });
 	PRINTER.print((std::string("SCORE: ") + std::to_string(score.load())).c_str());
+	if (score.load() == MAX_SCORE) {
+		PRINTER.setDefaultColor(0xF0);
+		PRINTER.console.setCaretPosition({ 23, 19 });
+		PRINTER.print("Congratulations for winning!");
+	}
+	WindowsServices::AudioFile game_over(score.load() == MAX_SCORE ? "master_system.mp3" : "ylimd.mp3");
+	game_over.loop();
 	while (true);
 	return false;
 }
