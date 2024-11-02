@@ -85,19 +85,33 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 	printer.console.setCaretPosition({29, 20});
 	printer.setDefaultColor(0x2E);
 	printer.print("The ASCII Game");
-	WindowsServices::AudioFile main_theme("giga_chad.mp3");
+	printer.setDefaultColor(0x2A);
+	printer.console.setCaretPosition({ 25, 27 });
+	printer.print("Flying Cheburek © 2024");
 	printer.setDefaultColor(0x2F);
 	printer.console.setCaretPosition({31, 23});
 	printer.print("< PLAY >");
 	printer.setDefaultColor(0x20);
 	printer.console.setCaretPosition({ 31, 24 });
 	printer.print("< QUIT >");
+	WindowsServices::AudioFile main_theme("giga_chad.mp3"), click("click.mp3"), swipe("swipe.mp3");
 	main_theme.loop();
 	char state = Keyboard::UP;
+	std::atomic<bool> play_sound = false;
+	std::atomic<WindowsServices::AudioFile*> sound = &swipe;
+	std::thread sound_fx([&sound, &play_sound]() {
+		while (true) {
+			if (play_sound.load()) {
+				sound.load()->play();
+				play_sound.store(false);
+			}
+		}
+	});
 	while (true) {
 		switch (keyboard.getKeyPressed()) {
 			case Keyboard::DOWN:
 				if (state == Keyboard::UP) {
+					play_sound.store(true);
 					state = Keyboard::DOWN;
 					printer.setDefaultColor(0x20);
 					printer.console.setCaretPosition({ 31, 23 });
@@ -109,6 +123,7 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 			break;
 			case Keyboard::UP:
 				if (state == Keyboard::DOWN) {
+					play_sound.store(true);
 					state = Keyboard::UP;
 					printer.setDefaultColor(0x2F);
 					printer.console.setCaretPosition({ 31, 23 });
@@ -119,14 +134,20 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 				}
 			break;
 			case Keyboard::ENTER:
+				sound.store(&click);
+				play_sound.store(true);
 				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
 				system("cls");
+				sound_fx.detach();
 				if (state == Keyboard::UP) return true;
 				else return false;
 			break;
 			case Keyboard::ESC:
+				sound.store(&click);
+				play_sound.store(true);
 				printer.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
 				system("cls");
+				sound_fx.detach();
 				return false;
 			break;
 		}
