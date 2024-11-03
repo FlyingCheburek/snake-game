@@ -1,10 +1,5 @@
 #include "SnakeGame.h"
 
-ComplexPrinter SnakeGame::Game::PRINTER = ComplexPrinter(219, WindowsServices::TerminalGraphics::WHITE);
-
-SnakeGame::Keyboard SnakeGame::Game::KEYBOARD = SnakeGame::Keyboard();
-SnakeGame::SoundFX SnakeGame::Game::SOUND_FX = SnakeGame::SoundFX();
-
 void SnakeGame::Game::drawBorder() const noexcept {
 	PRINTER.console.setTextColor(WindowsServices::TerminalGraphics::BLACK);
 	system("cls");
@@ -100,6 +95,7 @@ bool SnakeGame::Game::titleScreen() const noexcept {
 	WindowsServices::AudioFile main_theme("giga_chad.mp3"), click("click.mp3"), swipe("swipe.mp3");
 	main_theme.loop();
 	char state = Keyboard::UP;
+	KEYBOARD.setKeyPressed((char)Keyboard::UP);
 	while (true) {
 		switch (KEYBOARD.getKeyPressed()) {
 			case Keyboard::DOWN:
@@ -205,7 +201,7 @@ bool SnakeGame::Game::pauseScreen() const noexcept {
 				PRINTER.console.setCaretPosition({ 32, 27 });
 				PRINTER.print("< QUIT >");
 			}
-			break;
+		break;
 		case Keyboard::UP:
 			if (state == Keyboard::DOWN) {
 				SOUND_FX.setSound(&swipe, true);
@@ -217,25 +213,25 @@ bool SnakeGame::Game::pauseScreen() const noexcept {
 				PRINTER.console.setCaretPosition({ 32, 27 });
 				PRINTER.print("< QUIT >");
 			}
-			break;
+		break;
 		case Keyboard::ENTER:
 			SOUND_FX.setSound(&click, true);
 			PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::BLACK);
 			system("cls");
 			if (state == Keyboard::UP) return true;
 			else return false;
-			break;
+		break;
 		case Keyboard::ESC:
 			SOUND_FX.setSound(&click, true);
 			PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::BLACK);
 			system("cls");
 			return true;
-			break;
+		break;
 		}
 	}
 }
 
-bool SnakeGame::Game::gameOverScreen() noexcept {
+bool SnakeGame::Game::gameOverScreen() const noexcept {
 	drawBorder();
 	PRINTER.printMatrix({
 		{1, 1, 1, 1, 1},
@@ -302,9 +298,51 @@ bool SnakeGame::Game::gameOverScreen() noexcept {
 		PRINTER.console.setCaretPosition({ 23, 19 });
 		PRINTER.print("Congratulations for winning!");
 	}
-	WindowsServices::AudioFile game_over(score.load() == MAX_SCORE ? "master_system.mp3" : "ylimd.mp3");
+	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+	PRINTER.console.setCaretPosition({ 31, 26 });
+	PRINTER.print("< RESTART >");
+	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+	PRINTER.console.setCaretPosition({ 32, 27 });
+	PRINTER.print("< QUIT >");
+	WindowsServices::AudioFile game_over(score.load() == MAX_SCORE ? "master_system.mp3" : "ylimd.mp3"), click("click.mp3"), swipe("swipe.mp3");
 	game_over.loop();
-	while (true);
+	char state = Keyboard::UP;
+	KEYBOARD.setKeyPressed((char)Keyboard::UP);
+	while (true) {
+		switch (KEYBOARD.getKeyPressed()) {
+		case Keyboard::DOWN:
+			if (state == Keyboard::UP) {
+				SOUND_FX.setSound(&swipe, true);
+				state = Keyboard::DOWN;
+				PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+				PRINTER.console.setCaretPosition({ 31, 26 });
+				PRINTER.print("< RESTART >");
+				PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+				PRINTER.console.setCaretPosition({ 32, 27 });
+				PRINTER.print("< QUIT >");
+			}
+		break;
+		case Keyboard::UP:
+			if (state == Keyboard::DOWN) {
+				SOUND_FX.setSound(&swipe, true);
+				state = Keyboard::UP;
+				PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
+				PRINTER.console.setCaretPosition({ 31, 26 });
+				PRINTER.print("< RESTART >");
+				PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
+				PRINTER.console.setCaretPosition({ 32, 27 });
+				PRINTER.print("< QUIT >");
+			}
+		break;
+		case Keyboard::ENTER:
+			SOUND_FX.setSound(&click, true);
+			PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::BLACK);
+			system("cls");
+			if (state == Keyboard::UP) return true;
+			else return false;
+		break;
+		}
+	}
 	return false;
 }
 

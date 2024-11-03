@@ -2,9 +2,14 @@
 
 int main() {
 	SnakeGame::Game game;
-	if (game.titleScreen()) {
-		game.pauseScreen();
-		game.gameOverScreen();
-	} 
+	while (true) {
+		if (game.titleScreen()) {
+restart:
+			if (game.gameScreen()) 
+				if (game.gameOverScreen()) goto restart;
+			break;
+		}
+		else break;
+	}
 	return 0;
 }
