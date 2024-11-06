@@ -1,13 +1,14 @@
 ﻿#include "SnakeGame.h"
+#include "RandomIntGenerator.h"
 
 int main() {
 	SnakeGame::Game game;
-		if (game.titleScreen()) {
-			while (true) {
-				if (game.gameScreen())
-					if (!game.gameOverScreen()) 
-						break;
-			}
+	if (game.titleScreen()) {
+		while (true) {
+			game.gameScreen();
+			if (!game.gameOverScreen()) break;
 		}
+	}
+
 	return 0;
 }

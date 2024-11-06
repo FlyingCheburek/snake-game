@@ -361,6 +361,9 @@ char SnakeGame::Keyboard::getKeyPressed() const noexcept {
 void SnakeGame::Keyboard::setKeyPressed(const char&& key) noexcept {
 	key_pressed.store(key);
 }
+void SnakeGame::Keyboard::setKeyPressed(const char& key) noexcept {
+	key_pressed.store(key);
+}
 
 SnakeGame::Keyboard::~Keyboard() noexcept {
 	listener.detach();

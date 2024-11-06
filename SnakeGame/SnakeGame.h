@@ -4,6 +4,7 @@
 #include <thread>
 #include <atomic>
 #include <conio.h>
+#include <list>
 
 namespace SnakeGame {
 	class Keyboard {
@@ -15,6 +16,7 @@ namespace SnakeGame {
 		Keyboard() noexcept;
 		char getKeyPressed() const noexcept;
 		void setKeyPressed(const char&& key) noexcept;
+		void setKeyPressed(const char& key) noexcept;
 		~Keyboard() noexcept;
 		inline static const char ENTER = 13, ESC = 27, UP = 72, LEFT = 75, RIGHT = 77, DOWN = 80;
 	};
@@ -32,6 +34,17 @@ namespace SnakeGame {
 		~SoundFX() noexcept;
 	};
 
+	struct Snake {
+		std::list<COORD> body;
+		const WindowsServices::TerminalGraphics::Color color;
+		const unsigned char icon;
+		Printer& printer;
+		Snake(const WindowsServices::TerminalGraphics::Color color, Printer& printer, unsigned char&& icon) noexcept : color(color), body(std::list<COORD>()), printer(printer), icon(icon) {  }
+		void draw_body() const noexcept;
+		void erase_tail() noexcept;
+		void move(const COORD& location);
+	};
+
 	class Game {
 	private:
 		inline static ComplexPrinter PRINTER = ComplexPrinter(219, WindowsServices::TerminalGraphics::WHITE);
@@ -46,6 +59,7 @@ namespace SnakeGame {
 		bool pauseScreen() const noexcept;
 		bool gameScreen() noexcept;
 		bool gameOverScreen() const noexcept;
+		void reloadGameScreen(const Snake& snake) const noexcept;
 	};
 }
 
