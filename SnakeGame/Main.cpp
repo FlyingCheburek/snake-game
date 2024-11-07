@@ -1,5 +1,4 @@
 ﻿#include "SnakeGame.h"
-#include "RandomIntGenerator.h"
 
 int main() {
 	SnakeGame::Game game;

@@ -1,4 +1,5 @@
 #include "SnakeGame.h"
+#include <algorithm>
 
 void SnakeGame::Snake::draw_body() const noexcept {
 	printer.setDefaultColor(color);
@@ -15,26 +16,55 @@ void SnakeGame::Snake::erase_tail() noexcept {
 	body.pop_back();
 }
 
-void SnakeGame::Snake::move(const COORD& location) {
+void SnakeGame::Snake::move(const COORD& location, const bool&& eat) {
 	body.emplace_front(location);
 	printer.setDefaultColor(color);
+	printer.setIcon(219);
 	printer.console.setCaretPosition(&location);
 	printer.printIcon();
-	erase_tail();
+	if (!eat) erase_tail();
+}
+
+void SnakeGame::Game::drawScoreboard() const noexcept {
+	PRINTER.console.setCaretPosition({ 32, 0 });
+	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
+	PRINTER.print(("SCORE: " + std::to_string(score.load())).c_str());
 }
 
 void SnakeGame::Game::reloadGameScreen(const Snake& snake) const noexcept {
 	drawBorder();
 	PRINTER.setIcon(219);
-	PRINTER.console.setCaretPosition({ 32, 0 });
-	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
-	PRINTER.print(("SCORE: " + std::to_string(score.load())).c_str());
+	drawScoreboard();
 	snake.draw_body();
+	drawFruits();
+}
+
+void SnakeGame::Game::drawFruits() const noexcept {
+	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::RED);
+	PRINTER.setIcon('@');
+	for (const auto x : fruits) {
+		PRINTER.console.setCaretPosition(x);
+		PRINTER.printIcon();
+	}
+	PRINTER.setIcon(219);
+}
+
+COORD* SnakeGame::Game::haveFruit(const SnakeGame::Snake& snake, const COORD& location) const noexcept {
+	for (const auto f : fruits) {
+		if (location.X == f->X && location.Y == f->Y) return f;
+	}
+	return nullptr;
 }
 
 bool SnakeGame::Game::gameScreen() noexcept {
+	RandomIntGenerator rand(0, board.size()-1);
 	char state = Keyboard::LEFT;
 	COORD location = { 36, 20 };
+	fruits.clear();
+	score.store(0);
+	for (short x = 0; x < 5; x++) {
+		fruits.push_back(&board[rand.get_random()]);
+	}
 	Snake snake(WindowsServices::TerminalGraphics::GREEN, PRINTER, 219);
 	snake.body.emplace_front(location);
 	WindowsServices::AudioFile click("click.mp3"), chomp("swipe.mp3");
@@ -66,7 +96,19 @@ bool SnakeGame::Game::gameScreen() noexcept {
 		}
 		location.X += state == Keyboard::LEFT ? -1 : state == Keyboard::RIGHT ? 1 : 0;
 		location.Y += state == Keyboard::UP ? -1 : state == Keyboard::DOWN ? 1 : 0;
-		snake.move(location);
+		COORD* fruit = haveFruit(snake, location);
+		if (fruit) {
+			SOUND_FX.setSound(&chomp, true);
+			score++;
+			drawScoreboard();
+			snake.move(location, true);
+			fruits.erase(std::remove(fruits.begin(), fruits.end(), fruit), fruits.end());
+			if (fruits.size() < MAX_SCORE - snake.body.size()) {
+				fruits.push_back(&board[rand.get_random()]);
+			}
+		}
+		else snake.move(location);
+		drawFruits();
 		Sleep(200);
 	}
 	return true;
