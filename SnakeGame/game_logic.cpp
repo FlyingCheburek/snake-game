@@ -28,7 +28,7 @@ void SnakeGame::Snake::move(const COORD& location, const bool&& eat) {
 void SnakeGame::Game::drawScoreboard() const noexcept {
 	PRINTER.console.setCaretPosition({ 32, 0 });
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
-	PRINTER.print(("SCORE: " + std::to_string(score.load())).c_str());
+	PRINTER.print(("SCORE: " + std::to_string(score)).c_str());
 }
 
 void SnakeGame::Game::reloadGameScreen(const Snake& snake) const noexcept {
@@ -61,8 +61,8 @@ bool SnakeGame::Game::gameScreen() noexcept {
 	char state = Keyboard::LEFT;
 	COORD location = { 36, 20 };
 	fruits.clear();
-	score.store(0);
-	for (short x = 0; x < 5; x++) {
+	score = 0;
+	for (short x = 0; x < 50; x++) {
 		fruits.push_back(&board[rand.get_random()]);
 	}
 	Snake snake(WindowsServices::TerminalGraphics::GREEN, PRINTER, 219);
@@ -96,6 +96,8 @@ bool SnakeGame::Game::gameScreen() noexcept {
 		}
 		location.X += state == Keyboard::LEFT ? -1 : state == Keyboard::RIGHT ? 1 : 0;
 		location.Y += state == Keyboard::UP ? -1 : state == Keyboard::DOWN ? 1 : 0;
+		if (location.X == 0 || location.Y == 0 || location.X == WIDTH-1 || location.Y == HEIGHT) return false;
+		for (const COORD& c : snake.body) if (c.X == location.X && c.Y == location.Y) return false;
 		COORD* fruit = haveFruit(snake, location);
 		if (fruit) {
 			SOUND_FX.setSound(&chomp, true);
@@ -107,9 +109,10 @@ bool SnakeGame::Game::gameScreen() noexcept {
 				fruits.push_back(&board[rand.get_random()]);
 			}
 		}
+		else if (score == MAX_SCORE) break;
 		else snake.move(location);
 		drawFruits();
-		Sleep(200);
+		Sleep(100);
 	}
 	return true;
 }

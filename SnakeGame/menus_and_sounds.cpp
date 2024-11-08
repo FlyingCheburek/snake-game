@@ -178,7 +178,7 @@ bool SnakeGame::Game::pauseScreen() const noexcept {
 	}, { 45, 16 });
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
 	PRINTER.console.setCaretPosition({ 32, 23 });
-	PRINTER.print((std::string("SCORE: ") + std::to_string(score.load())).c_str());
+	PRINTER.print((std::string("SCORE: ") + std::to_string(score)).c_str());
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::WHITE);
 	PRINTER.console.setCaretPosition({ 30, 26 });
 	PRINTER.print("< CONTINUE >");
@@ -261,7 +261,7 @@ bool SnakeGame::Game::gameOverScreen() const noexcept {
 		{1, 0, 0, 0, 0},
 		{1, 1, 1, 1, 1},
 	}, { 43, 7 });
-	PRINTER.setDefaultColor(score.load() == MAX_SCORE ? WindowsServices::TerminalGraphics::GREEN : WindowsServices::TerminalGraphics::RED);
+	PRINTER.setDefaultColor(score == MAX_SCORE ? WindowsServices::TerminalGraphics::GREEN : WindowsServices::TerminalGraphics::RED);
 	PRINTER.printMatrix({
 		{0, 0, 1, 1, 0},
 		{0, 1, 0, 0, 1},
@@ -292,8 +292,8 @@ bool SnakeGame::Game::gameOverScreen() const noexcept {
 	}, { 43, 13 });
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::YELLOW);
 	PRINTER.console.setCaretPosition({ 32, 22 });
-	PRINTER.print((std::string("SCORE: ") + std::to_string(score.load())).c_str());
-	if (score.load() == MAX_SCORE) {
+	PRINTER.print((std::string("SCORE: ") + std::to_string(score)).c_str());
+	if (score == MAX_SCORE) {
 		PRINTER.setDefaultColor(0xF0);
 		PRINTER.console.setCaretPosition({ 23, 19 });
 		PRINTER.print("Congratulations for winning!");
@@ -304,7 +304,7 @@ bool SnakeGame::Game::gameOverScreen() const noexcept {
 	PRINTER.setDefaultColor(WindowsServices::TerminalGraphics::GRAY);
 	PRINTER.console.setCaretPosition({ 32, 27 });
 	PRINTER.print("< QUIT >");
-	WindowsServices::AudioFile game_over(score.load() == MAX_SCORE ? "master_system.mp3" : "ylimd.mp3"), click("click.mp3"), swipe("swipe.mp3");
+	WindowsServices::AudioFile game_over(score == MAX_SCORE ? "master_system.mp3" : "ylimd.mp3"), click("click.mp3"), swipe("swipe.mp3");
 	game_over.loop();
 	char state = Keyboard::UP;
 	KEYBOARD.setKeyPressed((char)Keyboard::UP);

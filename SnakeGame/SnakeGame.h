@@ -52,7 +52,7 @@ namespace SnakeGame {
 		inline static ComplexPrinter PRINTER = ComplexPrinter(219, WindowsServices::TerminalGraphics::WHITE);
 		inline static Keyboard KEYBOARD = Keyboard();
 		inline static SoundFX SOUND_FX = SoundFX();
-		std::atomic<short> score = 0;
+		short score = 0;
 		void drawBorder() const noexcept; 
 		void drawScoreboard() const noexcept;
 		std::vector<COORD> board;
